@@ -13,7 +13,6 @@ game = discord.Game("!마리")
 m = mari()
 bot = commands.Bot(command_prefix='!',status=discord.Status.online,activity=game,help_command=None)
 
-
 @bot.event
 async def on_ready():
     print("start bot")
@@ -23,6 +22,7 @@ async def 마리(ctx,arg):
     m.set_data(arg)
     list1 = m.print_data()
     await ctx.send(list1)
+
 
 # 봇 실행 
 # 토큰파일을 사용하지 않을경우 token변수 에 바로 token 코드 삽입
