@@ -14,21 +14,29 @@ class mari:
         res = requests.get(url)
         res.raise_for_status()      # 주소 연결 확인
         soup = BeautifulSoup(res.text,"lxml")
-        self.list_item = soup.find("ul",attrs={"class":"list-items"}) # 리스트 아이템 T3 탭
+        #self.list_item = soup.find("ul",attrs={"class":"list-items"}) # 리스트 아이템 T3 탭
+        self.list_item = soup.find("div",attrs={"id":"lui-tab1-1"})
+        self.list_item = self.list_item.find("ul",attrs={"class":"list-items"})
         self.items = self.list_item.find_all("div",attrs={"class":"wrapper"})
+        
+        #T2 items
+        self.list_item2 = soup.find("div",attrs={"id":"lui-tab1-2"})
+        self.list_item2= self.list_item2.find("ul",attrs={"class":"list-items"})
+        self.items2 = self.list_item2.find_all("div",attrs={"class":"wrapper"})
+
         amount = int(amount)
         self.amount = float(amount/95) # 초기 시세 입력값
         self.amount = round(self.amount,2) 
         
         
 
-    def print_data(self):
-
+    def print_data(self,items):
+        
         #print("1크리당 {}골드/".format(self.amount) )
-        self.list1="1크리당 {}골드/\n".format(self.amount)
+        list1="1크리당 {}골드/\n".format(self.amount)
         
         #불러온 아이템당 
-        for item in self.items:
+        for item in items:
             
             item_name = item.find("span",attrs={"class":"item-name"}).get_text()
             item_amount = item.find("span",attrs={"class":"amount"}).get_text()
@@ -48,23 +56,35 @@ class mari:
             str1= str("{0:<25}/  ".format(item_name) + " {} 크리스탈/  ".format(item_amount)+\
                 " {:.2f} 골드/  ".format(self.item_total)+" 개당 {} 골드\n".format(amount_per))
             
-            self.list1 = self.list1+str1
+            list1 = list1+str1
             # print("{0:<20}/  ".format(item_name),end='')
             # print(" {}크리스탈/  ".format(item_amount),end='')
             # print(" {:.2f}골드/  ".format(self.item_total),end='')
             # print(" 개당{}골드".format(amount_per))
 
-            
-        return self.list1    
-    
+        return list1
+
+    def get_data(self):
+        content =("T3\n"+
+        self.print_data(self.items)+
+        "\nT2\n"+
+        self.print_data(self.items2))
+        return content
+        # print("T3")
+        # print(self.print_data(self.items))
+        # print("T2")
+        # print(self.print_data(self.items2))
+
     
 
-a = mari()
-try:
-    a.set_data()
-    print(a.print_data())
-except Exception:
-    print("골드를 입력하세요\n사용예) !마리 1000")
+
+# a = mari()
+# try:
+#     a.set_data(2000)
+#     print(a.get_data())
+# except Exception as e:
+#     print(e)
+#     print("골드를 입력하세요\n사용예) !마리 1000")
 
 
 
