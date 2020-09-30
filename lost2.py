@@ -7,17 +7,19 @@ class mari:
     def __init__(self):
         self.amount = 0 # 초기 시세 입력값
         
+        
+    
+    def set_data(self,amount):
         url = "https://lostark.game.onstove.com/Shop#mari" #마리상점 주소
         res = requests.get(url)
         res.raise_for_status()      # 주소 연결 확인
         soup = BeautifulSoup(res.text,"lxml")
         self.list_item = soup.find("ul",attrs={"class":"list-items"}) # 리스트 아이템 T3 탭
         self.items = self.list_item.find_all("div",attrs={"class":"wrapper"})
-    
-    def set_data(self,amount):
         amount = int(amount)
         self.amount = float(amount/95) # 초기 시세 입력값
         self.amount = round(self.amount,2) 
+        
         
 
     def print_data(self):
@@ -57,8 +59,12 @@ class mari:
     
     
 
-
-
+a = mari()
+try:
+    a.set_data()
+    print(a.print_data())
+except Exception:
+    print("골드를 입력하세요\n사용예) !마리 1000")
 
 
 
