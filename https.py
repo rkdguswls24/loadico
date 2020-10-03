@@ -2,7 +2,6 @@ import requests
 import re
 import json
 
-contents = ("gkdfjklsj\n"
-            "skfjselfjsfjl\n"
-            "slfjekljflksjk\n")
+contents = ['1','500']
+contents = ''.join(contents)
 print(contents)

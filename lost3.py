@@ -23,11 +23,13 @@ class spec:
 
         contents = soup.find("div",attrs={"class":"profile-ability-basic"})
         self.content = contents.find_all("span")
+        self.realspec = soup.find("div",attrs={"class":"profile-ability-tooltip"})
+        #print(self.realspec.get_text())
         
     def get_data(self):
-        str1 = ("공격력: "+self.content[1].get_text())
+        str1 = ("공격력: "+self.content[1].get_text()+""+self.realspec.get_text())
         return str1
 
 # b = spec()
-# b.set_name("동네봉")
+# b.set_name("찌크릿가든")
 # print(b.get_data())

@@ -12,7 +12,7 @@ class mari:
     def set_data(self,amount):
         url = "https://lostark.game.onstove.com/Shop#mari" #마리상점 주소
         res = requests.get(url)
-        res.raise_for_status()      # 주소 연결 확인
+        print(res.raise_for_status())      # 주소 연결 확인
         soup = BeautifulSoup(res.text,"lxml")
         #self.list_item = soup.find("ul",attrs={"class":"list-items"}) # 리스트 아이템 T3 탭
         self.list_item = soup.find("div",attrs={"id":"lui-tab1-1"})
@@ -24,6 +24,7 @@ class mari:
         self.list_item2= self.list_item2.find("ul",attrs={"class":"list-items"})
         self.items2 = self.list_item2.find_all("div",attrs={"class":"wrapper"})
 
+        
         amount = int(amount)
         self.amount = float(amount/95) # 초기 시세 입력값
         self.amount = round(self.amount,2) 
@@ -39,22 +40,31 @@ class mari:
         for item in items:
             
             item_name = item.find("span",attrs={"class":"item-name"}).get_text()
-            item_amount = item.find("span",attrs={"class":"amount"}).get_text()
-            item_cnt = re.findall("\d+",item_name[-5:])
-
+            item_amount = item.find("span",attrs={"class":"amount"}).get_text()     #아이템 크리스탈 금액
+            item_cnt = re.findall("\d+",item_name[-8:])                             #아이템 수량
+            #print(item_cnt)
             if not item_cnt:
                 item_cnt = ['1']
-            
+            else:
+                item_cnt = ''.join(item_cnt)
 
             #총 골드 량 = 총 크리스탈 갯수 * 1크리당 골드
-            self.item_total = round(int(item_amount)*self.amount,2)
-            
+            self.item_total = (int(item_amount)*self.amount)             
+            # print(self.item_total)
+            # print(item_cnt)
             #개당 골드량 = 총 골드 량 / 아이템 갯수
-            amount_per = round(self.item_total/int(item_cnt[0]),2)
+            amount_per = self.item_total/int(item_cnt)
 
+            p= re.compile("석 결정+")
+            m = p.search(item_name)
+            #print(m)
             
-            str1= str("{0:<25}/  ".format(item_name) + " {} 크리스탈/  ".format(item_amount)+\
-                " {:.2f} 골드/  ".format(self.item_total)+" 개당 {} 골드\n".format(amount_per))
+            if m:
+                str1= str("{0:<25}/  ".format(item_name) + " {} 크리스탈 /  ".format(item_amount)+\
+                " {:.2f} 골드 /  ".format(self.item_total)+" 10 개당 {:.2f} 골드\n".format(amount_per*10))
+            else:
+                str1= str("{0:<25}/  ".format(item_name) + " {} 크리스탈 /  ".format(item_amount)+\
+                    " {:.2f} 골드 /  ".format(self.item_total)+" 개당 {:.2f} 골드\n".format(amount_per))
             
             list1 = list1+str1
             # print("{0:<20}/  ".format(item_name),end='')
@@ -78,9 +88,11 @@ class mari:
     
 
 
+
+
 # a = mari()
 # try:
-#     a.set_data(2000)
+#     a.set_data(1000)
 #     print(a.get_data())
 # except Exception as e:
 #     print(e)
