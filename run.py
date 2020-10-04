@@ -1,8 +1,10 @@
 import discord,asyncio
 from discord.ext import commands
 import os
+import random
 from lost2 import *
 from lost3 import *
+
 # 토큰 파일.txt 를 따로 사용할 경우
 token_path = os.path.dirname(os.path.abspath(__file__))+"/TOKEN_BOT.txt"
 t = open(token_path,"r",encoding="utf-8")
@@ -50,6 +52,13 @@ async def 스펙(ctx,arg):
 @스펙.error
 async def 스펙_error(ctx,error):
     await ctx.send("사용자를 찾을수 없습니다\n")
+
+# @bot.command()
+# async def 주사위(ctx,*arg):
+#     shuffle = arg
+    
+
+
 
 # 봇 실행 
 # 토큰파일을 사용하지 않을경우 token변수 에 바로 token 코드 삽입

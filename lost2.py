@@ -12,13 +12,14 @@ class mari:
     def set_data(self,amount):
         url = "https://lostark.game.onstove.com/Shop#mari" #마리상점 주소
         res = requests.get(url)
-        print(res.raise_for_status())      # 주소 연결 확인
+        res.raise_for_status()     # 주소 연결 확인
         soup = BeautifulSoup(res.text,"lxml")
         #self.list_item = soup.find("ul",attrs={"class":"list-items"}) # 리스트 아이템 T3 탭
         self.list_item = soup.find("div",attrs={"id":"lui-tab1-1"})
         self.list_item = self.list_item.find("ul",attrs={"class":"list-items"})
         self.items = self.list_item.find_all("div",attrs={"class":"wrapper"})
         
+
         #T2 items
         self.list_item2 = soup.find("div",attrs={"id":"lui-tab1-2"})
         self.list_item2= self.list_item2.find("ul",attrs={"class":"list-items"})
@@ -40,11 +41,13 @@ class mari:
         for item in items:
             
             item_name = item.find("span",attrs={"class":"item-name"}).get_text()
+            #print(item_name)
             item_amount = item.find("span",attrs={"class":"amount"}).get_text()     #아이템 크리스탈 금액
             item_cnt = re.findall("\d+",item_name[-8:])                             #아이템 수량
             #print(item_cnt)
+
             if not item_cnt:
-                item_cnt = ['1']
+                item_cnt = '1'
             else:
                 item_cnt = ''.join(item_cnt)
 

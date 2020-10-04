@@ -2,6 +2,7 @@ import requests
 import re
 import json
 
-contents = ['1','500']
-contents = ''.join(contents)
-print(contents)
+def test(*args):
+    print("{}".format(''.join(args)))
+
+test("dkjflks","dklfjslk","e3wfs")
