@@ -17,7 +17,8 @@ class spec:
     def set_name(self,name):
         self.name = name
         url = "https://lostark.game.onstove.com/Profile/Character/"
-        res = requests.get(url+self.name)
+        headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"}
+        res = requests.get(url+self.name,headers=headers,verify=False)
         res.raise_for_status()
         soup = BeautifulSoup(res.text,"lxml")
 

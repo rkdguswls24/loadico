@@ -4,6 +4,7 @@ import os
 import random
 from lost2 import *
 from lost3 import *
+from lost4 import *
 
 # 토큰 파일.txt 를 따로 사용할 경우
 token_path = os.path.dirname(os.path.abspath(__file__))+"/TOKEN_BOT.txt"
@@ -14,6 +15,7 @@ print("Token_key:",token)
 game = discord.Game("%마리")
 m = mari()
 spec = spec()
+di=dice()
 bot = commands.Bot(command_prefix='%',status=discord.Status.online,activity=game,help_command=None)
 
 @bot.event
@@ -53,9 +55,18 @@ async def 스펙(ctx,arg):
 async def 스펙_error(ctx,error):
     await ctx.send("사용자를 찾을수 없습니다\n")
 
-# @bot.command()
-# async def 주사위(ctx,*arg):
-#     shuffle = arg
+@bot.command()
+async def 주사위(ctx,*arg):
+    try:
+        str2 = ' '.join(arg)
+        str1 = "당첨자:"+di.get_data(str2)
+    except Exception:
+        str1 = "%주사위 (숫자) 또는 (닉네임)"
+    await ctx.send(str1)
+
+@주사위.error
+async def 주사위_error(ctx,error):
+    await ctx.send("error %주사위 (숫자) 또는 (닉네임)")
     
 
 

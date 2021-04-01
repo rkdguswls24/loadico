@@ -11,7 +11,8 @@ class mari:
     
     def set_data(self,amount):
         url = "https://lostark.game.onstove.com/Shop#mari" #마리상점 주소
-        res = requests.get(url)
+        headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"}
+        res = requests.get(url,headers=headers,verify=False)
         res.raise_for_status()     # 주소 연결 확인
         soup = BeautifulSoup(res.text,"lxml")
         #self.list_item = soup.find("ul",attrs={"class":"list-items"}) # 리스트 아이템 T3 탭
